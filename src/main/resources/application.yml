@@ -1,0 +1,34 @@
+server:
+    port: 8082
+
+spring:
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/logistics_robot_manager?useUnicode=true&characterEncoding=UTF-8&&useSSL=false&serverTimezoneAsia/Shanghai
+        username: root
+        password: 123456
+        type: com.alibaba.druid.pool.DruidDataSource
+    redis:
+        host: 127.0.0.1
+        port: 6379
+    mail:
+        host: smtp.qq.com
+        username: 1461459810@qq.com
+        password: ktfnawgbbcodbage
+        default-encoding: UTF-8
+        protocol: smtp
+        properties:
+            mail:
+                smtp:
+                    auth: true # 启用SMTP认证
+                    starttls:
+                        enabled: true # 启用SMTP认证
+                        required: true # 必须采用加密链接
+
+mybatis-plus:
+    mapper-locations: classpath:mapper/*Mapper.xml
+    type-aliases-package: com.example.logistics_robot_manager.entity
+    global-config:
+        db-config:
+            id-type: auto
+
