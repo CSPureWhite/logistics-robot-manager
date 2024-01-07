@@ -9,6 +9,7 @@ import com.example.logistics_robot_manager.entity.User;
 import com.example.logistics_robot_manager.mapper.UserMapper;
 import com.example.logistics_robot_manager.service.IUserService;
 import com.example.logistics_robot_manager.utils.MailUtil;
+import com.example.logistics_robot_manager.utils.PassWordUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -26,9 +27,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         // 根据邮箱查找用户
         User user=query().eq("email",loginFormDTO.getEmail()).one();
         if(user==null){
-            return Result.fail("400","邮箱或密码错误");
+            return Result.fail("400","邮箱错误");
         }
-        if(!user.getPassword().equals(loginFormDTO.getPassword())){
+        if(!PassWordUtil.check(user.getPassword(),loginFormDTO.getPassword())){
             return Result.fail("400","密码错误");
         }
         // 查询用户账号是否被禁用
@@ -45,8 +46,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     /**
      * 向注册邮箱发送验证码
-     * @param email
-     * @return
      */
     @Override
     public Result sendValidateCode(String email) {
@@ -72,7 +71,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         User user=new User();
         user.setUserName(registerFormDTO.getUsername());
-        user.setPassword(registerFormDTO.getPassword());
+        user.setPassword(PassWordUtil.encrypt(registerFormDTO.getPassword()));
         user.setUserType(registerFormDTO.getUserType());
         user.setIsActive(true);
         save(user);
