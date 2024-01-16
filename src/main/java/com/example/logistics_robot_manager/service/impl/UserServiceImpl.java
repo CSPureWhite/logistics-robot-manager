@@ -70,7 +70,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             return Result.fail("400","验证码错误");
         }
         User user=new User();
-        user.setUserName(registerFormDTO.getUsername());
+        user.setUsername(registerFormDTO.getUsername());
         user.setPassword(PassWordUtil.encrypt(registerFormDTO.getPassword()));
         user.setUserType(registerFormDTO.getUserType());
         user.setIsActive(true);
