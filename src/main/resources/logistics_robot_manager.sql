@@ -5,7 +5,7 @@
  Source Server Type    : MySQL
  Source Server Version : 80031
  Source Host           : localhost:3306
- Source Schema         : logistics_robor_manager
+ Source Schema         : logistics_robot_manager
 
  Target Server Type    : MySQL
  Target Server Version : 80031
