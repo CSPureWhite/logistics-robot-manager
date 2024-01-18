@@ -3,6 +3,9 @@ package com.example.logistics_robot_manager.utils;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
+/**
+ * 邮箱工具类
+ */
 public class MailUtil {
     static JavaMailSender mailSender;
 

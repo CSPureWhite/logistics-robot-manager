@@ -19,10 +19,10 @@ public class Result {
     private Long total;
 
     public static Result ok(){
-        return new Result( "200","操作成功", null,null);
+        return new Result( Constant.CODE_OK,"操作成功", null,null);
     }
     public static Result ok(Object data){
-        return new Result( "200","操作成功", data,null);
+        return new Result( Constant.CODE_OK,"操作成功", data,null);
     }
     public static Result ok(List<?> data, Long total) {
         return new Result( null,null, data, total);

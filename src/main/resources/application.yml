@@ -4,7 +4,7 @@ server:
 spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://127.0.0.1:3306/logistics_robot_manager?useUnicode=true&characterEncoding=UTF-8&&useSSL=false&serverTimezoneAsia/Shanghai
+        url: jdbc:mysql://127.0.0.1:3306/logistics_robot_manager?useUnicode=true&characterEncoding=UTF-8&&useSSL=false&serverTimezone=Asia/Shanghai
         username: root
         password: 123456
         type: com.alibaba.druid.pool.DruidDataSource
@@ -31,4 +31,3 @@ mybatis-plus:
     global-config:
         db-config:
             id-type: auto
-
