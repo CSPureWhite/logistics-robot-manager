@@ -15,7 +15,7 @@ import javax.validation.constraints.Email;
 
 @RestController
 @Validated
-public class UserController {
+public class LoginController {
     @Autowired
     private IUserService userService;
 
