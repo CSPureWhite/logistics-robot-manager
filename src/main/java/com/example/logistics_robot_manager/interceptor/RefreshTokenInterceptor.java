@@ -7,6 +7,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -27,8 +28,8 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
             return true;
         }
         String tokenKey=Constant.LOGIN_USER_KEY+token;
-        String userId =stringRedisTemplate.opsForValue().get(tokenKey);
-        if(StringUtils.isBlank(userId)){
+        Map<Object,Object> userMap=stringRedisTemplate.opsForHash().entries(tokenKey);
+        if(userMap.isEmpty()){
             // 用户不存在，放行
             return true;
         }
