@@ -25,7 +25,7 @@ public class Result {
         return new Result( Constant.CODE_OK,"操作成功", data,null);
     }
     public static Result ok(List<?> data, Long total) {
-        return new Result( null,null, data, total);
+        return new Result( Constant.CODE_OK,"操作成功", data, total);
     }
     public static Result fail(String errorCode,String msg){
         return new Result( errorCode,msg, null,null);
