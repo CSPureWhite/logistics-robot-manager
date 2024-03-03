@@ -6,12 +6,10 @@ import com.example.logistics_robot_manager.dto.RegisterFormDTO;
 import com.example.logistics_robot_manager.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 @RestController
 @Validated
@@ -24,8 +22,13 @@ public class LoginController {
         return userService.login(loginFormDTO);
     }
 
+    @GetMapping("captcha/{captchaKey}")
+    public Result sendCaptcha(@PathVariable @NotBlank(message = "验证码key不能为空值") String captchaKey){
+        return userService.sendCaptcha(captchaKey);
+    }
+
     @PostMapping("validateCode")
-    public Result sendValidateCode(@RequestParam("email") @Email(message = "邮箱地址格式错误") String email){
+    public Result sendValidateCode(@RequestBody @Email(message = "邮箱地址格式错误") String email){
         return userService.sendValidateCode(email);
     }
 

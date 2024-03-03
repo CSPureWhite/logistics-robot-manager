@@ -16,5 +16,9 @@ public class LoginFormDTO {
     @NotBlank(message = "密码不能为空值")
     private String password;
 
-    private String imgValidateCode;
+    @NotBlank(message = "验证码key不能为空值")
+    private String captchaKey;
+    
+    @NotBlank(message = "验证码不能为空值")
+    private String captchaCode;
 }
