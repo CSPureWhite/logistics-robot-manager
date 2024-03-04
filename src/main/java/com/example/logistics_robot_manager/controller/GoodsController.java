@@ -7,6 +7,7 @@ import com.example.logistics_robot_manager.entity.Goods;
 import com.example.logistics_robot_manager.service.IGoodsService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,7 +35,7 @@ public class GoodsController {
     }
 
     @PostMapping("AddGoods")
-    public Result addGoods(@RequestBody AddGoodsDTO addGoodsDTO){
+    public Result addGoods(@Validated @RequestBody AddGoodsDTO addGoodsDTO){
         Goods goods=new Goods();
         goods.setGoodsName(addGoodsDTO.getGoodsName());
         goods.setGoodsType(addGoodsDTO.getGoodsType());

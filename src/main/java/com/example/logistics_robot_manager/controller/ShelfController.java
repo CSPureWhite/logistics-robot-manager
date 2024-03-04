@@ -7,6 +7,7 @@ import com.example.logistics_robot_manager.entity.Shelf;
 import com.example.logistics_robot_manager.service.IShelfService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,7 +32,7 @@ public class ShelfController {
     }
 
     @PostMapping("addShelf")
-    public Result addShelf(@RequestBody AddShelfDTO addShelfDTO){
+    public Result addShelf(@Validated @RequestBody AddShelfDTO addShelfDTO){
         Shelf shelf=new Shelf();
         shelf.setShelfName(addShelfDTO.getShelfName());
         shelf.setShelfType(addShelfDTO.getShelfType());
