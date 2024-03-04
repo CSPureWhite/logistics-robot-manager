@@ -10,8 +10,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("user")
-public class UserInfoController {
+@RequestMapping("userCenter")
+public class UserCenterController {
     @Autowired
     IUserService userService;
 
