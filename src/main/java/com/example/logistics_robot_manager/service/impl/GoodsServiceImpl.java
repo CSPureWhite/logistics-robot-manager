@@ -10,9 +10,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements IGoodsService {
 
+    /**
+     * 分页查找所有货物
+     */
     @Override
     public Page<Goods> queryAll(Integer currentPage, Integer pageSize) {
-        return query().page(new Page<>(currentPage,pageSize));
+        return page(new Page<>(currentPage,pageSize));
     }
 
     /**
@@ -20,10 +23,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      */
     @Override
     public Page<Goods> queryByKey(Integer currentPage, Integer pageSize, String key) {
-        return query()
-                .eq("goods_id",key)
-                .or()
-                .like("goods_name","%"+key+"%")
-                .page(new Page<>(currentPage,pageSize));
+        return page(new Page<>(currentPage,pageSize),
+                query().eq("goods_id",key).or().like("goods_name","%"+key+"%"));
     }
 }
