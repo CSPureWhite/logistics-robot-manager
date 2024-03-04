@@ -12,11 +12,13 @@ import com.example.logistics_robot_manager.service.IUserService;
 import com.example.logistics_robot_manager.utils.MailUtil;
 import com.example.logistics_robot_manager.utils.PassWordUtil;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -29,10 +31,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public Result login(LoginFormDTO loginFormDTO) {
-        // 验证验证码是否正确
-        String codeKey=Constant.LOGIN_CODE_TTL+loginFormDTO.getCaptchaKey();
+        // 校验验证码是否正确（忽略大小写）
+        String codeKey=Constant.LOGIN_CODE_KEY+loginFormDTO.getCaptchaKey();
         String captchaCode=stringRedisTemplate.opsForValue().get(codeKey);
-        if(StringUtils.isEmpty(captchaCode)||captchaCode.equals(loginFormDTO.getCaptchaCode())){
+        if(StringUtils.isEmpty(captchaCode)||!captchaCode.equalsIgnoreCase(loginFormDTO.getCaptchaCode())){
             return Result.fail(Constant.CODE_BAD_REQUEST,"验证码错误");
         }
         // 根据邮箱查找用户
@@ -70,7 +72,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      */
     public Result sendCaptcha(String captchaKey){
         // 生成线段干扰图形验证码
-        LineCaptcha captcha=CaptchaUtil.createLineCaptcha(80,32,4,5);
+        LineCaptcha captcha=CaptchaUtil.createLineCaptcha(75,50,4,20);
+        int r=RandomUtils.nextInt(180,250);
+        int g=RandomUtils.nextInt(180,250);
+        int b=RandomUtils.nextInt(180,250);
+        captcha.setBackground(new Color(r,g,b));
         // 将验证码存入redis，有效期为60s
         String code=captcha.getCode();
         String codeKey=Constant.LOGIN_CODE_KEY+captchaKey;
