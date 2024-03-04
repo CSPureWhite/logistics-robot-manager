@@ -11,15 +11,12 @@ import org.springframework.stereotype.Service;
 public class ShelfServiceImpl extends ServiceImpl<ShelfMapper, Shelf> implements IShelfService {
     @Override
     public Page<Shelf> queryAll(Integer currentPage, Integer pageSize) {
-        return query().page(new Page<>(currentPage, pageSize));
+        return page(new Page<>(currentPage,pageSize));
     }
 
     @Override
     public Page<Shelf> queryByKey(Integer currentPage, Integer pageSize, String key) {
-        return query()
-                .eq("goods_id",key)
-                .or()
-                .like("goods_name","%"+key+"%")
-                .page(new Page<>(currentPage,pageSize));
+        return page(new Page<>(currentPage, pageSize),
+                query().eq("goods_id", key).or().like("goods_name", "%" + key + "%"));
     }
 }
