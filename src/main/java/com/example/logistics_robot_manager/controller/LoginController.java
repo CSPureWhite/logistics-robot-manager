@@ -12,6 +12,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @RestController
+@RequestMapping("login-register")
 @Validated
 public class LoginController {
     @Autowired
