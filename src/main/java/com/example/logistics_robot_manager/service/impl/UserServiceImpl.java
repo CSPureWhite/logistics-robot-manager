@@ -4,10 +4,8 @@ import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.logistics_robot_manager.common.Constant;
-import com.example.logistics_robot_manager.dto.LoginFormDTO;
+import com.example.logistics_robot_manager.dto.*;
 import com.example.logistics_robot_manager.common.Result;
-import com.example.logistics_robot_manager.dto.RegisterFormDTO;
-import com.example.logistics_robot_manager.dto.UserDTO;
 import com.example.logistics_robot_manager.entity.User;
 import com.example.logistics_robot_manager.mapper.UserMapper;
 import com.example.logistics_robot_manager.service.IUserService;
@@ -42,6 +40,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if(user==null){
             return Result.fail(Constant.CODE_BAD_REQUEST,"邮箱错误");
         }
+        // 判断密码是否正确
         if(!PassWordUtil.check(user.getPassword(),loginFormDTO.getPassword())){
             return Result.fail(Constant.CODE_BAD_REQUEST,"密码错误");
         }
@@ -114,6 +113,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setUserType(registerFormDTO.getUserType());
         user.setIsActive(true);
         save(user);
+        return Result.ok();
+    }
+
+    @Override
+    public Result getUserInfo(Long userId) {
+        User user=getById(userId);
+        UserInfoDTO userInfoDTO=new UserInfoDTO();
+        try {
+            BeanUtils.copyProperties(userInfoDTO,user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.fail(Constant.CODE_BAD_REQUEST,"运行异常");
+        }
+        return Result.ok(userInfoDTO);
+    }
+
+    @Override
+    public Result updatePassword(Long userId, UpdatePasswordDTO updatePasswordDTO) {
+        // 检查原密码是否正确
+        User user=getById(userId);
+        if(!PassWordUtil.check(user.getPassword(),updatePasswordDTO.getOldPassword())){
+            return Result.fail(Constant.CODE_BAD_REQUEST,"密码错误");
+        }
+        // 更新密码
+        user.setPassword(PassWordUtil.encrypt(updatePasswordDTO.getNewPassword()));
+        updateById(user);
         return Result.ok();
     }
 }
