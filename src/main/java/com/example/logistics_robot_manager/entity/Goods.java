@@ -1,5 +1,6 @@
 package com.example.logistics_robot_manager.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -15,7 +16,7 @@ public class Goods implements Serializable {
     /**
      * 货物id
      */
-    @TableId
+    @TableId(value = "goods_id",type = IdType.AUTO)
     private Long goodsId;
 
     /**
