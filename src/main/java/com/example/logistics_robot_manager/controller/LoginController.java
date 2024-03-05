@@ -1,5 +1,6 @@
 package com.example.logistics_robot_manager.controller;
 
+import com.example.logistics_robot_manager.dto.EmailDTO;
 import com.example.logistics_robot_manager.dto.LoginFormDTO;
 import com.example.logistics_robot_manager.common.Result;
 import com.example.logistics_robot_manager.dto.RegisterFormDTO;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @RestController
@@ -29,8 +29,8 @@ public class LoginController {
     }
 
     @PostMapping("validateCode")
-    public Result sendValidateCode(@RequestBody @Email(message = "邮箱地址格式错误") String email){
-        return userService.sendValidateCode(email);
+    public Result sendValidateCode(@Validated @RequestBody EmailDTO emailDTO){
+        return userService.sendValidateCode(emailDTO.getEmail());
     }
 
     @PostMapping("register")
