@@ -11,7 +11,7 @@
  Target Server Version : 80031
  File Encoding         : 65001
 
- Date: 04/03/2024 14:57:12
+ Date: 06/03/2024 17:14:20
 */
 
 SET NAMES utf8mb4;
@@ -31,11 +31,7 @@ CREATE TABLE `goods`  (
   `details` varchar(10000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '货物明细',
   `shelf_id` bigint UNSIGNED NULL DEFAULT NULL COMMENT '所在货架的id',
   PRIMARY KEY (`goods_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of goods
--- ----------------------------
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for shelf
@@ -44,16 +40,12 @@ DROP TABLE IF EXISTS `shelf`;
 CREATE TABLE `shelf`  (
   `shelf_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '货架id',
   `shelf_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '货架名称',
-  `shelf_status` tinyint(1) NOT NULL COMMENT '货架状态，0为无货物，1为有货物，2为已满',
+  `shelf_status` tinyint(1) NULL DEFAULT 0 COMMENT '货架状态，0为无货物，1为有货物，2为已满',
   `shelf_type` int NULL DEFAULT NULL COMMENT '货架类型，1为samll，2为middle，3为large',
-  `goods_amount` int NULL DEFAULT NULL COMMENT '货架存放的货物数量',
+  `goods_amount` int NULL DEFAULT 0 COMMENT '货架存放的货物数量',
   `create_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '激活时间',
   PRIMARY KEY (`shelf_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of shelf
--- ----------------------------
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user
@@ -68,11 +60,8 @@ CREATE TABLE `user`  (
   `is_active` tinyint(1) NULL DEFAULT 1 COMMENT '用户状态标识，0为被禁用，1为活跃',
   `create_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
   `update_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '最近一次更新时间',
+  `login_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '最近一次登录时间',
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of user
--- ----------------------------
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
 
 SET FOREIGN_KEY_CHECKS = 1;
