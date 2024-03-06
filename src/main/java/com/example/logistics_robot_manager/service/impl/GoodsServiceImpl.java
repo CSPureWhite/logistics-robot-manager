@@ -19,7 +19,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      */
     @Override
     public Page<Goods> queryAll(Integer currentPage, Integer pageSize) {
-        return page(new Page<>(currentPage,pageSize)).addOrder(OrderItem.desc("create_time")); // 按照生产时间倒序排列
+        return page(new Page<Goods>(currentPage,pageSize).addOrder(OrderItem.desc("create_time"))); // 按照生产时间倒序排列
     }
 
     /**
@@ -27,9 +27,8 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      */
     @Override
     public Page<Goods> queryByKey(Integer currentPage, Integer pageSize, String key) {
-        return page(new Page<>(currentPage,pageSize),
-                query().eq("goods_id",key).or().like("goods_name","%"+key+"%"))
-                .addOrder(OrderItem.desc("create_time")); // 按照生产时间倒序排列
+        return page(new Page<Goods>(currentPage,pageSize).addOrder(OrderItem.desc("create_time")), // 按照生产时间倒序排列
+                query().eq("goods_id",key).or().like("goods_name","%"+key+"%")); // 添加id匹配和名称模糊匹配
     }
 
     /**
