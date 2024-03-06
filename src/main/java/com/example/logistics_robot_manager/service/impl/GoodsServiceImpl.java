@@ -1,5 +1,6 @@
 package com.example.logistics_robot_manager.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -27,8 +28,9 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      */
     @Override
     public Page<Goods> queryByKey(Integer currentPage, Integer pageSize, String key) {
-        return page(new Page<Goods>(currentPage,pageSize).addOrder(OrderItem.desc("create_time")), // 按照生产时间倒序排列
-                query().eq("goods_id",key).or().like("goods_name","%"+key+"%")); // 添加id匹配和名称模糊匹配
+        LambdaQueryWrapper<Goods> wrapper=new LambdaQueryWrapper<>();
+        wrapper.eq(Goods::getGoodsId, key).or().like(Goods::getGoodsName, "%" + key + "%"); // 添加id匹配和名称模糊匹配
+        return page(new Page<Goods>(currentPage,pageSize).addOrder(OrderItem.desc("create_time")), wrapper);
     }
 
     /**

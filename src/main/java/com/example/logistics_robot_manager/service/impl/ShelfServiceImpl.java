@@ -1,5 +1,6 @@
 package com.example.logistics_robot_manager.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -17,7 +18,8 @@ public class ShelfServiceImpl extends ServiceImpl<ShelfMapper, Shelf> implements
 
     @Override
     public Page<Shelf> queryByKey(Integer currentPage, Integer pageSize, String key) {
-        return page(new Page<Shelf>(currentPage, pageSize).addOrder(OrderItem.desc("create_time")),
-                query().eq("goods_id", key).or().like("goods_name", "%" + key + "%")); // 添加id匹配和名称模糊匹配
+        LambdaQueryWrapper<Shelf> wrapper=new LambdaQueryWrapper<>();
+        wrapper.eq(Shelf::getShelfId, key).or().like(Shelf::getShelfName, "%" + key + "%"); // 添加id匹配和名称模糊匹配
+        return page(new Page<Shelf>(currentPage, pageSize).addOrder(OrderItem.desc("create_time")),wrapper);
     }
 }
