@@ -14,7 +14,6 @@ public class MailUtil {
     JavaMailSender mailSender;
 
     public void sendValidateCodeMail(String email,String validateCode) {
-//        mailSender=new JavaMailSenderImpl();
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         // 邮件标题
         mailMessage.setSubject("物流机器人管理系统-注册验证码");
