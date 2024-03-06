@@ -1,15 +1,20 @@
 package com.example.logistics_robot_manager.utils;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Component;
 
 /**
  * 邮箱工具类
  */
+@Component
 public class MailUtil {
-    static JavaMailSender mailSender;
+    @Autowired
+    JavaMailSender mailSender;
 
-    public static void sendValidateCodeMail(String email,String validateCode) {
+    public void sendValidateCodeMail(String email,String validateCode) {
+//        mailSender=new JavaMailSenderImpl();
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         // 邮件标题
         mailMessage.setSubject("物流机器人管理系统-注册验证码");

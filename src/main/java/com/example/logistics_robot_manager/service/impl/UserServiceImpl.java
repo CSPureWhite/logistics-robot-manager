@@ -2,6 +2,8 @@ package com.example.logistics_robot_manager.service.impl;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.logistics_robot_manager.common.Constant;
 import com.example.logistics_robot_manager.dto.*;
@@ -19,6 +21,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -28,6 +31,8 @@ import java.util.concurrent.TimeUnit;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
     @Autowired
     StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    MailUtil mailUtil;
 
     @Override
     public Result login(LoginFormDTO loginFormDTO) {
@@ -64,6 +69,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             e.printStackTrace();
             return Result.fail(Constant.CODE_BAD_REQUEST,"参数异常");
         }
+        // 更新用户的最近一次登录时间
+        user.setLoginTime(LocalDateTime.now());
+        updateById(user);
         return Result.ok(token);
     }
 
@@ -73,9 +81,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public Result sendCaptcha(String captchaKey){
         // 生成线段干扰图形验证码
         LineCaptcha captcha=CaptchaUtil.createLineCaptcha(75,50,4,20);
-        int r=RandomUtils.nextInt(180,250);
-        int g=RandomUtils.nextInt(180,250);
-        int b=RandomUtils.nextInt(180,250);
+        int r=RandomUtils.nextInt(200,250);
+        int g=RandomUtils.nextInt(200,250);
+        int b=RandomUtils.nextInt(200,250);
         captcha.setBackground(new Color(r,g,b));
         // 将验证码存入redis，有效期为60s
         String code=captcha.getCode();
@@ -98,7 +106,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         // 将验证码存入Redis中
         stringRedisTemplate.opsForValue().set(key,validateCode,Constant.REGISTER_CODE_TTL,TimeUnit.SECONDS);
         // 发送邮件
-        MailUtil.sendValidateCodeMail(email,validateCode);
+        mailUtil.sendValidateCodeMail(email,validateCode);
         return Result.ok();
     }
 
@@ -146,5 +154,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setPassword(PassWordUtil.encrypt(updatePasswordDTO.getNewPassword()));
         updateById(user);
         return Result.ok();
+    }
+
+    @Override
+    public Page<UserManagerDTO> queryAll(Integer currentPage, Integer pageSize) {
+        // TODO
+        page(new Page<User>(currentPage,pageSize).addOrder(OrderItem.desc("login_time"))); // 按照生产时间倒序排列
+        return null;
+    }
+
+    @Override
+    public Page<UserManagerDTO> queryByKey(Integer currentPage, Integer pageSize, String key) {
+        // TODO
+        return null;
     }
 }
