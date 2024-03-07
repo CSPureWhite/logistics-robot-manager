@@ -97,14 +97,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     /**
-     * 向注册邮箱发送验证码
+     * 向注册邮箱发送验证码（请求最小时间间隔为60秒，验证码有效期为5分钟）
      */
     @Override
     public Result sendValidateCode(String email) {
-        String validateCode= UUID.randomUUID().toString().substring(0, 6);
         String key=Constant.REGISTER_CODE_KEY +email;
-        // 将验证码存入Redis中
-        stringRedisTemplate.opsForValue().set(key,validateCode,Constant.REGISTER_CODE_TTL,TimeUnit.SECONDS);
+        String cacheValue=stringRedisTemplate.opsForValue().get(key);
+        // 如果redis键值对不为空，先判断是否60秒内重复请求发送验证码
+        if(!StringUtils.isBlank(cacheValue)){
+            long ttl=Long.parseLong(cacheValue.split("_")[1]);
+            // 当前时间戳-redis中验证码时间戳，如果小于60秒，则不允许再次发送验证码
+            long timeInterval=System.currentTimeMillis()-ttl;
+            if(timeInterval<Constant.REGISTER_MAIL_TTL){
+                String msg=String.format("发送邮件验证码请求过于频繁，剩余时间间隔：%d秒",60-(int)Math.floor(timeInterval/1000.0));
+                log.warn(msg);
+                return Result.fail(Constant.CODE_BAD_REQUEST,msg);
+            }
+        }
+        // key不存在redis中，则生成验证码存入redis，并发送邮件
+        String validateCode= UUID.randomUUID().toString().substring(0, 6);
+        // 将验证码与当前时间戳进行拼接
+        String value=validateCode+"_"+System.currentTimeMillis();
+        // 将拼接后带有时间戳的验证码存入Redis中，验证码有效期设为5分钟
+        stringRedisTemplate.opsForValue().set(key,value,Constant.REGISTER_CODE_TTL,TimeUnit.SECONDS);
         // 发送邮件
         mailUtil.sendValidateCodeMail(email,validateCode);
         return Result.ok();
