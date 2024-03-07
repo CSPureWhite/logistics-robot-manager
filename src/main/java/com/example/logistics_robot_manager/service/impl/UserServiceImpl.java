@@ -49,7 +49,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             return Result.fail(Constant.CODE_BAD_REQUEST,"邮箱错误");
         }
         // 判断密码是否正确
-        if(!PassWordUtil.check(user.getPassword(),loginFormDTO.getPassword())){
+        if(!PassWordUtil.check(loginFormDTO.getPassword(),user.getPassword())){
             return Result.fail(Constant.CODE_BAD_REQUEST,"密码错误");
         }
         // 查询用户账号是否被禁用
@@ -133,12 +133,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             return Result.fail(Constant.CODE_BAD_REQUEST,"邮箱已被注册");
         }
         // 校验验证码
-        String validateCode=stringRedisTemplate.opsForValue().get(Constant.REGISTER_CODE_KEY +registerFormDTO.getEmail());
+        String cacheValue=stringRedisTemplate.opsForValue().get(Constant.REGISTER_CODE_KEY +registerFormDTO.getEmail());
+        if(StringUtils.isBlank(cacheValue)){
+            // redis键值对为空
+            return Result.fail(Constant.CODE_BAD_REQUEST,"验证码失效或邮箱地址错误");
+        }
+        String validateCode=cacheValue.split("_")[0];
         if(!registerFormDTO.getValidateCode().equals(validateCode)){
+            // redis缓存验证码与用户输入验证码不一致
             return Result.fail(Constant.CODE_BAD_REQUEST,"验证码错误");
         }
         User user=new User();
         user.setUsername(registerFormDTO.getUsername());
+        user.setEmail(registerFormDTO.getEmail());
         user.setPassword(PassWordUtil.encrypt(registerFormDTO.getPassword()));
         user.setUserType(registerFormDTO.getUserType());
         user.setIsActive(true);
