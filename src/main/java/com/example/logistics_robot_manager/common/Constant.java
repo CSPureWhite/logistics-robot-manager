@@ -19,4 +19,8 @@ public class Constant {
      * 邮件验证码发送请求最小时间间隔：60秒（此处单位为毫秒）
      */
     public static final int REGISTER_MAIL_TTL=60000;
+    /**
+     * 验证码邮件发件人地址
+     */
+    public static final String MAIL_SENDER_ADDRESS="1461459810@qq.com";
 }

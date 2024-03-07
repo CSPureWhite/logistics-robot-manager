@@ -1,5 +1,6 @@
 package com.example.logistics_robot_manager.utils;
 
+import com.example.logistics_robot_manager.common.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -20,7 +21,7 @@ public class MailUtil {
         // 邮件内容
         mailMessage.setText("您的验证码为："+validateCode+"\n该验证码将在5分钟后失效！");
         // 发送人
-        mailMessage.setFrom("1461459810@qq.com");
+        mailMessage.setFrom(Constant.MAIL_SENDER_ADDRESS);
         // 收件人
         mailMessage.setTo(email);
         // 发送
