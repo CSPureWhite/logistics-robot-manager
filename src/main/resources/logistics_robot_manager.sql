@@ -11,7 +11,7 @@
  Target Server Version : 80031
  File Encoding         : 65001
 
- Date: 06/03/2024 17:14:20
+ Date: 08/03/2024 00:21:08
 */
 
 SET NAMES utf8mb4;
@@ -45,7 +45,7 @@ CREATE TABLE `shelf`  (
   `goods_amount` int NULL DEFAULT 0 COMMENT '货架存放的货物数量',
   `create_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '激活时间',
   PRIMARY KEY (`shelf_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user
@@ -59,8 +59,8 @@ CREATE TABLE `user`  (
   `user_type` tinyint(1) NULL DEFAULT 1 COMMENT '用户类型标识，1为普通用户，2为管理员',
   `is_active` tinyint(1) NULL DEFAULT 1 COMMENT '用户状态标识，0为被禁用，1为活跃',
   `create_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建时间',
-  `update_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '最近一次更新时间',
   `login_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '最近一次登录时间',
+  `task_id` bigint UNSIGNED NULL DEFAULT NULL COMMENT '最近一次执行任务的任务id',
   PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
 
