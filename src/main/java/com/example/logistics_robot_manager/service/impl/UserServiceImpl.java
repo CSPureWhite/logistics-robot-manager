@@ -2,6 +2,7 @@ package com.example.logistics_robot_manager.service.impl;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -172,15 +173,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public Page<UserManagerDTO> queryAll(Integer currentPage, Integer pageSize) {
+    public Page<User> queryAll(Integer currentPage, Integer pageSize) {
         // TODO
-        page(new Page<User>(currentPage,pageSize).addOrder(OrderItem.desc("login_time"))); // 按照生产时间倒序排列
+        page(new Page<User>(currentPage,pageSize).addOrder(OrderItem.desc("login_time"))); // 按照登录时间倒序排列
         return null;
     }
 
     @Override
-    public Page<UserManagerDTO> queryByKey(Integer currentPage, Integer pageSize, String key) {
+    public Page<User> queryByKey(Integer currentPage, Integer pageSize, String key) {
         // TODO
+        LambdaQueryWrapper<User> wrapper=new LambdaQueryWrapper<>();
+        wrapper.eq(User::getUserId, key).or().like(User::getUsername, "%" + key + "%"); // 添加id匹配和名称模糊匹配
+        page(new Page<User>(currentPage,pageSize).addOrder(OrderItem.desc("login_time")), wrapper);
         return null;
     }
 }

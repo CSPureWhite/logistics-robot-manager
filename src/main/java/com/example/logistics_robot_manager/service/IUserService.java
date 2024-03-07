@@ -6,7 +6,6 @@ import com.example.logistics_robot_manager.dto.LoginFormDTO;
 import com.example.logistics_robot_manager.common.Result;
 import com.example.logistics_robot_manager.dto.RegisterFormDTO;
 import com.example.logistics_robot_manager.dto.UpdatePasswordDTO;
-import com.example.logistics_robot_manager.dto.UserManagerDTO;
 import com.example.logistics_robot_manager.entity.User;
 
 public interface IUserService extends IService<User> {
@@ -22,7 +21,7 @@ public interface IUserService extends IService<User> {
 
     Result updatePassword(Long userId, UpdatePasswordDTO updatePasswordDTO);
 
-    Page<UserManagerDTO> queryAll(Integer currentPage, Integer pageSize);
+    Page<User> queryAll(Integer currentPage, Integer pageSize);
 
-    Page<UserManagerDTO> queryByKey(Integer currentPage, Integer pageSize, String key);
+    Page<User> queryByKey(Integer currentPage, Integer pageSize, String key);
 }
