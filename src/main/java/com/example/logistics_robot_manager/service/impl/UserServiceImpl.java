@@ -179,19 +179,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return Result.ok();
     }
 
+    /**
+     * 分页查找所有用户
+     */
     @Override
     public Page<User> queryAll(Integer currentPage, Integer pageSize) {
-        // TODO
-        page(new Page<User>(currentPage,pageSize).addOrder(OrderItem.desc("login_time"))); // 按照登录时间倒序排列
-        return null;
+        return page(new Page<User>(currentPage,pageSize).addOrder(OrderItem.desc("login_time"))); // 按照登录时间倒序排列
     }
 
+    /**
+     * 根据用户ID或名称分页查找用户
+     */
     @Override
     public Page<User> queryByKey(Integer currentPage, Integer pageSize, String key) {
-        // TODO
         LambdaQueryWrapper<User> wrapper=new LambdaQueryWrapper<>();
         wrapper.eq(User::getUserId, key).or().like(User::getUsername, "%" + key + "%"); // 添加id匹配和名称模糊匹配
-        page(new Page<User>(currentPage,pageSize).addOrder(OrderItem.desc("login_time")), wrapper);
-        return null;
+        return page(new Page<User>(currentPage,pageSize).addOrder(OrderItem.desc("login_time")), wrapper);
     }
 }
