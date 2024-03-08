@@ -11,11 +11,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ShelfServiceImpl extends ServiceImpl<ShelfMapper, Shelf> implements IShelfService {
+    /**
+     * 分页查找所有货架
+     */
     @Override
     public Page<Shelf> queryAll(Integer currentPage, Integer pageSize) {
         return page(new Page<Shelf>(currentPage, pageSize).addOrder(OrderItem.desc("create_time"))); // 按激活时间倒序排列;
     }
 
+    /**
+     * 根据货架ID或名称分页查找货架
+     */
     @Override
     public Page<Shelf> queryByKey(Integer currentPage, Integer pageSize, String key) {
         LambdaQueryWrapper<Shelf> wrapper=new LambdaQueryWrapper<>();
