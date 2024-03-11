@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.logistics_robot_manager.mapper.GoodsMapper">
+
+    <select id="selectPageByKey" resultType="com.example.logistics_robot_manager.entity.Goods">
+        SELECT
+            g.goods_id,g.goods_name,g.goods_status,g.goods_type_id,g.create_time,g.shelving_time,g.details,
+            g.shelf_id,gt.goods_type_name
+        FROM goods g
+        LEFT JOIN goods_type gt ON g.goods_type_id = gt.goods_type_id
+        <where>
+            <if test="key !=null and key !=''">
+                g.goods_id = #{key} OR g.goods_name LIKE CONCAT('%',#{key},'%')
+            </if>
+        </where>
+    </select>
+    <select id="countByGoodsType" resultType="com.example.logistics_robot_manager.dto.GoodsTypeCountDTO">
+        SELECT gt.goods_type_name,COUNT(goods_id) value FROM goods g
+        JOIN goods_type gt on g.goods_type_id = gt.goods_type_id
+        GROUP BY g.goods_type_id
+    </select>
+</mapper>

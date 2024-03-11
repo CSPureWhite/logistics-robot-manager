@@ -21,7 +21,5 @@ public interface IUserService extends IService<User> {
 
     Result updatePassword(Long userId, UpdatePasswordDTO updatePasswordDTO);
 
-    Page<User> queryAll(Integer currentPage, Integer pageSize);
-
     Page<User> queryByKey(Integer currentPage, Integer pageSize, String key);
 }

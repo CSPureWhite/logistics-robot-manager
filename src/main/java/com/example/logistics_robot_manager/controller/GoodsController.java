@@ -5,7 +5,6 @@ import com.example.logistics_robot_manager.common.Result;
 import com.example.logistics_robot_manager.dto.AddGoodsDTO;
 import com.example.logistics_robot_manager.entity.Goods;
 import com.example.logistics_robot_manager.service.IGoodsService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,13 +23,7 @@ public class GoodsController {
     ){
         // 分页查询
         Page<Goods> goodsPage;
-        if(StringUtils.isEmpty(key)){
-            // 无特定筛选条件，返回全部数据
-            goodsPage=goodsService.queryAll(currentPage,pageSize);
-        }
-        else{
-            goodsPage=goodsService.queryByKey(currentPage, pageSize, key);
-        }
+        goodsPage=goodsService.queryPageByKey(currentPage, pageSize, key);
         return Result.ok(goodsPage.getRecords(),goodsPage.getTotal());
     }
 
@@ -38,7 +31,7 @@ public class GoodsController {
     public Result addGoods(@Validated @RequestBody AddGoodsDTO addGoodsDTO){
         Goods goods=new Goods();
         goods.setGoodsName(addGoodsDTO.getGoodsName());
-        goods.setGoodsType(addGoodsDTO.getGoodsType());
+        goods.setGoodsTypeId(addGoodsDTO.getGoodsType());
         goodsService.save(goods);
         return Result.ok();
     }

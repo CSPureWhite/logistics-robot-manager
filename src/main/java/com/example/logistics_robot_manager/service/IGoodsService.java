@@ -8,7 +8,6 @@ import com.example.logistics_robot_manager.entity.Goods;
 import java.util.List;
 
 public interface IGoodsService extends IService<Goods> {
-    Page<Goods> queryAll(Integer currentPage, Integer pageSize);
-    Page<Goods> queryByKey(Integer currentPage, Integer pageSize, String key);
+    Page<Goods> queryPageByKey(Integer currentPage, Integer pageSize, String key);
     List<GoodsTypeCountDTO> countByGoodsType();
 }

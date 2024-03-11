@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.logistics_robot_manager.common.Result;
 import com.example.logistics_robot_manager.entity.User;
 import com.example.logistics_robot_manager.service.IUserService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,11 +22,7 @@ public class UserManageController {
                                  @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize
     ){
         Page<User> userPage;
-        if(StringUtils.isEmpty(key)){
-            userPage=userService.queryAll(currentPage,pageSize);
-        }else{
-            userPage=userService.queryByKey(currentPage, pageSize, key);
-        }
+        userPage=userService.queryByKey(currentPage, pageSize, key);
         return Result.ok(userPage.getRecords(),userPage.getTotal());
     }
 }

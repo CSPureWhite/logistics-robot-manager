@@ -2,7 +2,6 @@ package com.example.logistics_robot_manager.service.impl;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -23,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.awt.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -71,8 +71,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             return Result.fail(Constant.CODE_BAD_REQUEST,"参数异常");
         }
         // 更新用户的最近一次登录时间
-        user.setLoginTime(LocalDateTime.now());
+        LocalDateTime now=LocalDateTime.now();
+        user.setLoginTime(now);
         updateById(user);
+        // 更新redis中的用户日活量
+        String DAUKey=Constant.DAU_KEY+now.format(DateTimeFormatter.ISO_DATE);
+        stringRedisTemplate.opsForValue().setBit(DAUKey, user.getUserId(),true); // 将当天的BitMap中该用户id所对应的bit值设为1
         return Result.ok(token);
     }
 
@@ -180,20 +184,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     /**
-     * 分页查找所有用户
-     */
-    @Override
-    public Page<User> queryAll(Integer currentPage, Integer pageSize) {
-        return page(new Page<User>(currentPage,pageSize).addOrder(OrderItem.desc("login_time"))); // 按照登录时间倒序排列
-    }
-
-    /**
-     * 根据用户ID或名称分页查找用户
+     * 根据用户ID或名称分页查找用户（key为空时，返回所有数据）
      */
     @Override
     public Page<User> queryByKey(Integer currentPage, Integer pageSize, String key) {
-        LambdaQueryWrapper<User> wrapper=new LambdaQueryWrapper<>();
-        wrapper.eq(User::getUserId, key).or().like(User::getUsername, "%" + key + "%"); // 添加id匹配和名称模糊匹配
-        return page(new Page<User>(currentPage,pageSize).addOrder(OrderItem.desc("login_time")), wrapper);
+        Page<User> page=new Page<>(currentPage,pageSize);
+        page.addOrder(OrderItem.desc("login_time")); // 按照登录时间倒序排列
+        getBaseMapper().selectPageByKey(page,key);
+        return page;
     }
 }

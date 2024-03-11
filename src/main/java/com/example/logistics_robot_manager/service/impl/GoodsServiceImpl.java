@@ -1,6 +1,5 @@
 package com.example.logistics_robot_manager.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -16,21 +15,14 @@ import java.util.List;
 public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements IGoodsService {
 
     /**
-     * 分页查找所有货物
+     * 根据货物ID或名称分页查找货物（key为空时，返回所有数据）
      */
     @Override
-    public Page<Goods> queryAll(Integer currentPage, Integer pageSize) {
-        return page(new Page<Goods>(currentPage,pageSize).addOrder(OrderItem.desc("create_time"))); // 按照生产时间倒序排列
-    }
-
-    /**
-     * 根据货物ID或名称分页查找货物
-     */
-    @Override
-    public Page<Goods> queryByKey(Integer currentPage, Integer pageSize, String key) {
-        LambdaQueryWrapper<Goods> wrapper=new LambdaQueryWrapper<>();
-        wrapper.eq(Goods::getGoodsId, key).or().like(Goods::getGoodsName, "%" + key + "%"); // 添加id匹配和名称模糊匹配
-        return page(new Page<Goods>(currentPage,pageSize).addOrder(OrderItem.desc("create_time")), wrapper);
+    public Page<Goods> queryPageByKey(Integer currentPage, Integer pageSize, String key) {
+        Page<Goods> page=new Page<>(currentPage,pageSize);
+        page.addOrder(OrderItem.desc("create_time"));  // 按照生产时间倒序排列
+        getBaseMapper().selectPageByKey(page,key);
+        return page;
     }
 
     /**

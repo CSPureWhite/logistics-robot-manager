@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class GoodsTypeCountDTO {
-    private Integer goodsType;
+    private String goodsTypeName;
     private Integer value;
 }

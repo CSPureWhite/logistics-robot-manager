@@ -1,6 +1,7 @@
 package com.example.logistics_robot_manager.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -31,9 +32,9 @@ public class Goods implements Serializable {
     private Integer goodsStatus;
 
     /**
-     * 货物类型
+     * 货物类型id
      */
-    private Long goodsType;
+    private Long goodsTypeId;
 
     /**
      * 生产时间
@@ -56,4 +57,10 @@ public class Goods implements Serializable {
      * 所在货架的id
      */
     private Long shelfId;
+
+    /**
+     * 货物类型名称
+     */
+    @TableField(exist = false)
+    private String goodsTypeName;
 }

@@ -5,7 +5,6 @@ import com.example.logistics_robot_manager.common.Result;
 import com.example.logistics_robot_manager.dto.AddShelfDTO;
 import com.example.logistics_robot_manager.entity.Shelf;
 import com.example.logistics_robot_manager.service.IShelfService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +22,7 @@ public class ShelfController {
             @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize
     ){
         Page<Shelf> shelfPage;
-        if(StringUtils.isEmpty(key)){
-            shelfPage=shelfService.queryAll(currentPage,pageSize);
-        }else{
-            shelfPage=shelfService.queryByKey(currentPage, pageSize, key);
-        }
+        shelfPage=shelfService.queryPageByKey(currentPage, pageSize, key);
         return Result.ok(shelfPage.getRecords(),shelfPage.getTotal());
     }
 
