@@ -9,5 +9,6 @@ import javax.validation.constraints.NotNull;
 public class AddGoodsDTO {
     @NotBlank(message = "货物名不能为空值")
     private String goodsName;
+    @NotNull(message = "货物类型不能为空值")
     private Long goodsType;
 }

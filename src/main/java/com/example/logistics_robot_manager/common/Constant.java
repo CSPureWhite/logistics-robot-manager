@@ -14,6 +14,11 @@ public class Constant {
     public static final String REGISTER_CODE_KEY ="register:code:";
     public static final Long REGISTER_CODE_TTL =300L;
 
+    /**
+     * 用户日活量
+     */
+    public static final String DAU_KEY="DAU:";
+
     // others
     /**
      * 邮件验证码发送请求最小时间间隔：60秒（此处单位为毫秒）
