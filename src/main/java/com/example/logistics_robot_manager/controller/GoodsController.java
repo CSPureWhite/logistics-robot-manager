@@ -4,16 +4,22 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.logistics_robot_manager.common.Result;
 import com.example.logistics_robot_manager.dto.AddGoodsDTO;
 import com.example.logistics_robot_manager.entity.Goods;
+import com.example.logistics_robot_manager.entity.GoodsType;
 import com.example.logistics_robot_manager.service.IGoodsService;
+import com.example.logistics_robot_manager.service.IGoodsTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("goodsManage")
 public class GoodsController {
     @Autowired
     IGoodsService goodsService;
+    @Autowired
+    IGoodsTypeService goodsTypeService;
 
     @GetMapping("page")
     public Result queryGoodsPage(
@@ -27,12 +33,21 @@ public class GoodsController {
         return Result.ok(goodsPage.getRecords(),goodsPage.getTotal());
     }
 
-    @PostMapping("AddGoods")
+    @PostMapping("addGoods")
     public Result addGoods(@Validated @RequestBody AddGoodsDTO addGoodsDTO){
         Goods goods=new Goods();
         goods.setGoodsName(addGoodsDTO.getGoodsName());
         goods.setGoodsTypeId(addGoodsDTO.getGoodsType());
         goodsService.save(goods);
         return Result.ok();
+    }
+
+    /**
+     * 获取货物类型列表
+     */
+    @GetMapping("/addGoods/getGoodsType")
+    public Result getGoodsTypeList(){
+        List<GoodsType> goodsTypeList=goodsTypeService.list();
+        return Result.ok(goodsTypeList);
     }
 }
