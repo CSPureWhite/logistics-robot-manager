@@ -23,6 +23,4 @@ public class RegisterFormDTO {
 
     @NotNull(message = "验证码不能为空值")
     private String validateCode;
-
-    private Integer userType;
 }
