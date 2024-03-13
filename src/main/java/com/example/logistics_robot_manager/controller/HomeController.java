@@ -39,8 +39,8 @@ public class HomeController {
     public Result getDAUChart(){
         LocalDateTime now=LocalDateTime.now();
         List<DAUDTO> resultList=new ArrayList<>();
-        // 从redis获取过去7天的用户日活量（包括今天）
-        for(long i=6;i>=0;i--){
+        // 从redis获取过去30天的用户日活量（包括今天）
+        for(long i=Constant.DAU_PERIOD-1;i>=0;i--){
             LocalDateTime localDateTime=now.minusDays(i);
             String date=localDateTime.format(DateTimeFormatter.ISO_DATE);
             String dauKey= Constant.DAU_KEY+date;

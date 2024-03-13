@@ -15,7 +15,7 @@ public class Constant {
     public static final Long REGISTER_CODE_TTL =300L;
 
     /**
-     * 用户日活量
+     * 用户日活量前缀
      */
     public static final String DAU_KEY="DAU:";
 
@@ -28,4 +28,8 @@ public class Constant {
      * 验证码邮件发件人地址
      */
     public static final String MAIL_SENDER_ADDRESS="1461459810@qq.com";
+    /**
+     * 用户日活量统计时间，设为30天（包括今日）
+     */
+    public static final long DAU_PERIOD=30L;
 }
