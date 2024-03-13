@@ -1,6 +1,5 @@
 package com.example.logistics_robot_manager.service.impl;
 
-import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -11,16 +10,15 @@ import com.example.logistics_robot_manager.common.Result;
 import com.example.logistics_robot_manager.entity.User;
 import com.example.logistics_robot_manager.mapper.UserMapper;
 import com.example.logistics_robot_manager.service.IUserService;
+import com.example.logistics_robot_manager.utils.CaptchaUtils;
 import com.example.logistics_robot_manager.utils.MailUtil;
 import com.example.logistics_robot_manager.utils.PassWordUtil;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -84,12 +82,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      * 生成图形验证码并以Base64编码返回给前端
      */
     public Result sendCaptcha(String captchaKey){
-        // 生成线段干扰图形验证码
-        LineCaptcha captcha=CaptchaUtil.createLineCaptcha(75,50,4,20);
-        int r=RandomUtils.nextInt(200,250);
-        int g=RandomUtils.nextInt(200,250);
-        int b=RandomUtils.nextInt(200,250);
-        captcha.setBackground(new Color(r,g,b));
+        // 生成验证码对象
+        LineCaptcha captcha= CaptchaUtils.generateCaptcha();
         // 将验证码存入redis，有效期为60s
         String code=captcha.getCode();
         String codeKey=Constant.LOGIN_CODE_KEY+captchaKey;
@@ -151,7 +145,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setUsername(registerFormDTO.getUsername());
         user.setEmail(registerFormDTO.getEmail());
         user.setPassword(PassWordUtil.encrypt(registerFormDTO.getPassword()));
-        user.setUserType(registerFormDTO.getUserType());
         user.setIsActive(true);
         save(user);
         return Result.ok();
