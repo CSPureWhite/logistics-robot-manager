@@ -11,7 +11,7 @@
  Target Server Version : 80031
  File Encoding         : 65001
 
- Date: 13/03/2024 16:33:57
+ Date: 14/03/2024 17:11:48
 */
 
 SET NAMES utf8mb4;
@@ -31,7 +31,7 @@ CREATE TABLE `goods`  (
   `details` varchar(10000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '货物明细',
   `shelf_id` bigint UNSIGNED NULL DEFAULT NULL COMMENT '所在货架的id',
   PRIMARY KEY (`goods_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of goods
@@ -40,8 +40,10 @@ INSERT INTO `goods` VALUES (1, '测试货物1', 0, 1, '2024-03-11 17:54:16', NUL
 INSERT INTO `goods` VALUES (2, '测试货物2', 0, 2, '2024-03-11 17:54:34', NULL, NULL, NULL);
 INSERT INTO `goods` VALUES (3, '测试货物3', 0, 1, '2024-03-11 17:54:54', NULL, NULL, NULL);
 INSERT INTO `goods` VALUES (4, 'test1', 0, 2, '2024-03-11 23:41:43', NULL, NULL, NULL);
-INSERT INTO `goods` VALUES (5, '测试货物4', 0, 3, '2024-03-11 23:42:08', NULL, NULL, NULL);
-INSERT INTO `goods` VALUES (6, '测试货物5', 0, 4, '2024-03-11 23:42:54', NULL, NULL, NULL);
+INSERT INTO `goods` VALUES (5, '测试货物4', 0, 1, '2024-03-14 17:11:27', NULL, NULL, NULL);
+INSERT INTO `goods` VALUES (6, '测试货物5', 0, 2, '2024-03-14 17:11:33', NULL, NULL, NULL);
+INSERT INTO `goods` VALUES (7, '测试货物0314', 0, 1, '2024-03-14 15:22:28', NULL, NULL, NULL);
+INSERT INTO `goods` VALUES (8, '测试货物03142', 0, 1, '2024-03-14 15:54:36', NULL, '测试测试测试', NULL);
 
 -- ----------------------------
 -- Table structure for goods_type
@@ -76,9 +78,9 @@ CREATE TABLE `shelf`  (
 -- ----------------------------
 -- Records of shelf
 -- ----------------------------
-INSERT INTO `shelf` VALUES (1, 'test1', 1, 1, 0, '2024-03-06 16:18:07');
-INSERT INTO `shelf` VALUES (2, 'test2', 1, 2, 0, '2024-03-06 16:18:34');
-INSERT INTO `shelf` VALUES (3, 'test3', 1, 2, 0, '2024-03-06 16:18:50');
+INSERT INTO `shelf` VALUES (1, 'test1', 0, 1, 0, '2024-03-06 16:18:07');
+INSERT INTO `shelf` VALUES (2, 'test2', 0, 2, 0, '2024-03-06 16:18:34');
+INSERT INTO `shelf` VALUES (3, 'test3', 0, 2, 0, '2024-03-06 16:18:50');
 INSERT INTO `shelf` VALUES (4, '11111', 0, 2, 0, '2024-03-06 21:11:37');
 
 -- ----------------------------
@@ -96,12 +98,13 @@ CREATE TABLE `user`  (
   `login_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '最近一次登录时间',
   `task_id` bigint UNSIGNED NULL DEFAULT NULL COMMENT '最近一次执行任务的任务id',
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'test', '$2a$10$F9jzm.TB2uUmH4PEwv08XuDVqNu9dzwZA5WCLAHAVHOvVrOGXl2Ii', '475364602@qq.com', 1, 1, '2024-03-07 22:32:43', '2024-03-07 22:38:51', NULL);
-INSERT INTO `user` VALUES (2, 'test2', '$2a$10$hX7rJembgpnZe4BT3apo3u00k9.0KVBW1xmK8hlnyh5HAlMcH/mi.', 'ysx1461459810@163.com', 1, 1, '2024-03-11 16:46:37', '2024-03-11 16:47:29', NULL);
+INSERT INTO `user` VALUES (1, 'admin_ysx', '$2a$10$rfdP0G4uRl0R5vT1Do3MxOFnb0G2Ojg2xx0Bjnjj/JTGwXD.zHXIi', '1461459810@qq.com', 2, 1, '2024-03-14 17:03:43', '2024-03-14 17:05:37', NULL);
+INSERT INTO `user` VALUES (2, 'admin_zgh', '$2a$10$F9jzm.TB2uUmH4PEwv08XuDVqNu9dzwZA5WCLAHAVHOvVrOGXl2Ii', '475364602@qq.com', 2, 1, '2024-03-07 22:32:43', '2024-03-13 21:06:33', NULL);
+INSERT INTO `user` VALUES (3, 'test2', '$2a$10$hX7rJembgpnZe4BT3apo3u00k9.0KVBW1xmK8hlnyh5HAlMcH/mi.', 'ysx1461459810@163.com', 1, 1, '2024-03-11 16:46:37', '2024-03-14 16:58:45', NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
