@@ -167,7 +167,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     public Result updatePassword(Long userId, UpdatePasswordDTO updatePasswordDTO) {
         // 检查原密码是否正确
         User user=getById(userId);
-        if(!PassWordUtil.check(user.getPassword(),updatePasswordDTO.getOldPassword())){
+        if(!PassWordUtil.check(updatePasswordDTO.getOldPassword(),user.getPassword())){
             return Result.fail(Constant.CODE_BAD_REQUEST,"密码错误");
         }
         // 更新密码

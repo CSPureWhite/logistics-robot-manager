@@ -19,11 +19,11 @@ public class PassWordUtil {
 
     /**
      * 校验密码
-     * @param hashedTarget // 数据库中的目标密文密码
      * @param pw // 待校验的明文输入密码
+     * @param hashedTarget // 数据库中的目标密文密码
      * @return 密码一致返回true
      */
-    public static boolean check(String hashedTarget,String pw){
-        return BCrypt.checkpw(hashedTarget, pw);
+    public static boolean check(String pw,String hashedTarget){
+        return BCrypt.checkpw(pw,hashedTarget);
     }
 }
